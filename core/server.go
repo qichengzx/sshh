@@ -24,7 +24,6 @@ func (s *Server) Connect() {
 	auth, err := s.parseAuthMethod()
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	config := &ssh.ClientConfig{
@@ -39,14 +38,12 @@ func (s *Server) Connect() {
 	client, err := ssh.Dial("tcp", addr, config)
 	if err != nil {
 		panic(err)
-		return
 	}
 	defer client.Close()
 
 	session, err := client.NewSession()
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	defer session.Close()
@@ -55,7 +52,6 @@ func (s *Server) Connect() {
 	state, err := terminal.MakeRaw(fd)
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	session.Stdout = os.Stdout
@@ -65,7 +61,6 @@ func (s *Server) Connect() {
 	termWidth, termHeight, err := terminal.GetSize(fd)
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	defer terminal.Restore(fd, state)
@@ -83,13 +78,11 @@ func (s *Server) Connect() {
 	err = session.Shell()
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	err = session.Wait()
 	if err != nil {
 		panic(err)
-		return
 	}
 }
 
