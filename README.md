@@ -2,7 +2,7 @@ sshh
 [![Go Report Card](https://goreportcard.com/badge/github.com/qichengzx/sshh)](https://goreportcard.com/report/github.com/qichengzx/sshh)
 ----
 
-通过使用配置文件来避免 ssh 登录服务器时需要输入密码。
+用Go写的一个通过读取配置文件连接远程服务器的工具，免去ssh登录时需要输入密码的步骤。
 
 Installation
 ------
@@ -10,6 +10,26 @@ Installation
 ```shell
 go get github.com/qichengzx/sshh
 ```
+
+or Download
+
+[https://github.com/qichengzx/sshh/releases](https://github.com/qichengzx/sshh/releases)
+
+Build for Multi Platforms
+------
+
+```shell
+chmod +x build.sh
+sh build.sh
+```
+
+Build for current Platform
+------
+```shell
+go build main.go
+```
+
+将会在releases目录生成可执行文件
 
 Configuration
 ------
