@@ -4,13 +4,17 @@ import (
 	"flag"
 	"fmt"
 	. "github.com/qichengzx/sshh/core"
+	"io/ioutil"
+	"log"
 	"os"
+	"os/user"
 	"path/filepath"
 )
 
 const (
-	appName = "sshh"
-	version = "0.1.2"
+	appName   = "sshh"
+	version   = "0.2.0"
+	cacheFile = ".sshh_profile"
 )
 
 var (
@@ -29,16 +33,25 @@ func main() {
 	switch {
 	case c != "":
 		c = parseConfig(c)
-		app := New(c)
-		app.Start()
+		profileWrite(c)
+		appRun(c)
 		break
 	case h:
 		flag.Usage()
 		break
 	default:
-		flag.Usage()
+		f, err := profileRead()
+		if err != nil {
+			log.Fatal(err)
+		}
+		appRun(string(f))
 		break
 	}
+}
+
+func appRun(c string) {
+	app := New(c)
+	app.Start()
 }
 
 func parseConfig(c string) string {
@@ -47,6 +60,25 @@ func parseConfig(c string) string {
 		c = filepath.Join(appPath, c)
 	}
 	return c
+}
+
+func home() string {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return usr.HomeDir
+}
+
+func profileWrite(c string) error {
+	homeStr := home()
+	return ioutil.WriteFile(filepath.Join(homeStr, cacheFile), []byte(c), 0644)
+}
+
+func profileRead() ([]byte, error) {
+	homeStr := home()
+	return ioutil.ReadFile(filepath.Join(homeStr, cacheFile))
 }
 
 func usage() {
