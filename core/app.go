@@ -41,8 +41,11 @@ func (app *App) readInput() Server {
 
 	input := ""
 	fmt.Scanln(&input)
-	num, err := strconv.Atoi(input)
+	if input == "q" {
+		os.Exit(0)
+	}
 
+	num, err := strconv.Atoi(input)
 	if err != nil {
 		fmt.Println("输入有误，请重新输入")
 		return app.readInput()
