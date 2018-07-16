@@ -60,12 +60,14 @@ Configuration
 Usage
 ------
 
+第一次使用需要指定配置文件：
+
 ```shell
 sshh -c path-to-servers-config.json
-
 ```
+
+之后如果配置不变的情况下，只需要 ```sshh```  即可。
 
 配置文件路径可以是相对 sshh 的路径或绝对路径
 
 pem 模式时，如果 pem 文件路径填写的是相对路径，程序会自动在配置文件目录和 sshh 执行目录查找，查找不到会panic。
-
