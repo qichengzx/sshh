@@ -18,7 +18,7 @@ do
 
     echo "build ${output_name}"
 
-    CGO_ENABLED=0 GOOS=${os} GOARCH=${arch} go build -o "./releases/${output_name}/${package}" main.go
+    CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -o "./releases/${output_name}/${package}" main.go
 
     if [ $? -ne 0 ]; then
         echo 'An error has occurred! Aborting the script execution...'
