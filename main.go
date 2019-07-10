@@ -13,7 +13,7 @@ import (
 
 const (
 	appName   = "sshh"
-	version   = "0.2.1"
+	version   = "0.3.0"
 	cacheFile = ".sshh_profile"
 )
 
@@ -24,7 +24,7 @@ var (
 
 func init() {
 	flag.BoolVar(&h, "h", false, "This help")
-	flag.StringVar(&c, "c", "", "Set configuration `filename` (default ./servers.json)")
+	flag.StringVar(&c, "c", "", "Set configuration `filename` (default ./servers.yaml)")
 	flag.Parse()
 	flag.Usage = usage
 }

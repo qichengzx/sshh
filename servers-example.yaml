@@ -1,0 +1,26 @@
+group:
+  -
+    -
+      name: g1
+      method: password
+      user: www
+      port: 22
+      password: yourpassword
+      ip: [192.168.3.10, 192.168.3.11, 192.168.3.12]
+      key:
+single:
+  -
+    name: test1
+    method: password
+    user: www
+    ip: 192.168.3.20
+    port: 22
+    password: yourpassword
+  -
+    name: test2
+    method: pem
+    user: root
+    ip: 192.168.3.21
+    port: 22
+    password: 'your pem file password or empty'
+    key: 'your pem file path'

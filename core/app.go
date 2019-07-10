@@ -1,9 +1,10 @@
 package core
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/go-yaml/yaml"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -78,16 +79,48 @@ func (app *App) keyFile(k string) string {
 	return k
 }
 
+type Conf struct {
+	Group [][]struct {
+		Name     string   `yaml:"name"`
+		Method   string   `yaml:"method"`
+		User     string   `yaml:"user"`
+		Port     int      `yaml:"port"`
+		Password string   `yaml:"password"`
+		IP       []string `yaml:"ip"`
+		Key      string   `yaml:"key"`
+	} `yaml:"group"`
+	Single []Server `yaml:"single"`
+}
+
 func readConf(c string) ([]Server, error) {
 	b, err := ioutil.ReadFile(c)
 	if err != nil {
 		panic(err)
 	}
 
-	servers := []Server{}
-	err = json.Unmarshal(b, &servers)
+	conf := Conf{}
+	err = yaml.Unmarshal(b, &conf)
 	if err != nil {
-		return servers, err
+		log.Fatalf("error: %v", err)
+	}
+
+	servers := []Server{}
+	for i, server := range conf.Group {
+		s := Server{
+			Name:     server[i].Name,
+			Method:   server[i].Method,
+			User:     server[i].User,
+			Port:     server[i].Port,
+			Password: server[i].Password,
+			Key:      server[i].Key,
+		}
+		for _, ip := range server[i].IP {
+			s.IP = ip
+			servers = append(servers, s)
+		}
+	}
+	for _, server := range conf.Single {
+		servers = append(servers, server)
 	}
 
 	return servers, nil

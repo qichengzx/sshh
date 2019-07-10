@@ -11,13 +11,13 @@ import (
 )
 
 type Server struct {
-	Name     string `json:"name"`
-	Method   string `json:"method"`
-	User     string `json:"user"`
-	IP       string `json:"ip"`
-	Port     int    `json:"port"`
-	Password string `json:"password"`
-	Key      string `json:"key"`
+	Name     string `yaml:"name"`
+	Method   string `yaml:"method"`
+	User     string `yaml:"user"`
+	IP       string `yaml:"ip"`
+	Port     int    `yaml:"port"`
+	Password string `yaml:"password"`
+	Key      string `yaml:"key"`
 }
 
 func (s *Server) Connect() {
