@@ -34,28 +34,37 @@ go build main.go
 Configuration
 ------
 
-```json
-[
-  {
-    "name": "test1",
-    "method": "password",
-    "user": "www",
-    "ip": "192.168.3.10",
-    "port": 22,
-    "password": "yourpassword"
-  },
-  {
-    "name": "test2",
-    "method": "pem",
-    "user": "root",
-    "ip": "192.168.3.11",
-    "port": 22,
-    "password": "your pem file password or empty",
-    "key": "your pem file path"
-  }
-]
-
+```yaml
+group:
+  -
+    -
+      name: g1
+      method: password
+      user: www
+      port: 22
+      password: yourpassword
+      ip: [192.168.3.10, 192.168.3.11, 192.168.3.12]
+      key:
+single:
+  -
+    name: test1
+    method: password
+    user: www
+    ip: 192.168.3.20
+    port: 22
+    password: yourpassword
+  -
+    name: test2
+    method: pem
+    user: root
+    ip: 192.168.3.21
+    port: 22
+    password: 'your pem file password or empty'
+    key: 'your pem file path'
 ```
+
+其中，group 表示可以使用一个账号登录的一组服务器，single 则为每服务器独立账号或密码的情况。
+(You know,Sometimes you wake up and you have a set of server permissions.)
 
 Usage
 ------
@@ -63,7 +72,7 @@ Usage
 第一次使用需要指定配置文件：
 
 ```shell
-sshh -c path-to-servers-config.json
+sshh -c path-to-servers-config.yaml
 ```
 
 之后如果配置不变的情况下，只需要 ```sshh```  即可。
