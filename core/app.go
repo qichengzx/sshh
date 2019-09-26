@@ -23,7 +23,7 @@ func (app *App) Start() {
 	}
 
 	server := app.readInput()
-	fmt.Println("你选择了: " + server.Name)
+	fmt.Println("你选择了: " + server.IP)
 	fmt.Println("Connecting...")
 	server.Key = app.keyFile(server.Key)
 	server.Connect()
