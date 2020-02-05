@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 package=sshh
-version="0.3.0"
+version="0.4.0"
 
 platforms=("darwin/amd64" "linux/amd64" "linux/arm" "linux/386")
 

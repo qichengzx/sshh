@@ -29,8 +29,8 @@ func (app *App) Start() {
 	server.Connect()
 }
 
-func New(c string) *App {
-	servers, _ := readConf(c)
+func New(c, g string) *App {
+	servers, _ := readConf(c, g)
 
 	return &App{
 		ConfigPath: c,
@@ -80,19 +80,25 @@ func (app *App) keyFile(k string) string {
 }
 
 type Conf struct {
-	Group [][]struct {
-		Name     string   `yaml:"name"`
-		Method   string   `yaml:"method"`
-		User     string   `yaml:"user"`
-		Port     int      `yaml:"port"`
-		Password string   `yaml:"password"`
-		IP       []string `yaml:"ip"`
-		Key      string   `yaml:"key"`
-	} `yaml:"group"`
+	Groups Groups   `yaml:"group"`
 	Single []Server `yaml:"single"`
 }
 
-func readConf(c string) ([]Server, error) {
+type Groups struct {
+	Groups map[string]Group `yaml:"groups"`
+}
+
+type Group struct {
+	Name     string
+	Method   string   `yaml:"method"`
+	User     string   `yaml:"user"`
+	Port     int      `yaml:"port"`
+	Password string   `yaml:"password"`
+	IP       []string `yaml:"ip"`
+	Key      string   `yaml:"key"`
+}
+
+func readConf(c, g string) ([]Server, error) {
 	b, err := ioutil.ReadFile(c)
 	if err != nil {
 		panic(err)
@@ -105,16 +111,21 @@ func readConf(c string) ([]Server, error) {
 	}
 
 	servers := []Server{}
-	for i, server := range conf.Group {
-		s := Server{
-			Name:     server[i].Name,
-			Method:   server[i].Method,
-			User:     server[i].User,
-			Port:     server[i].Port,
-			Password: server[i].Password,
-			Key:      server[i].Key,
+	for name, server := range conf.Groups.Groups {
+		//group check
+		if g != "" && name != g {
+			continue
 		}
-		for _, ip := range server[i].IP {
+		s := Server{
+			Name:     name,
+			Method:   server.Method,
+			User:     server.User,
+			Port:     server.Port,
+			Password: server.Password,
+			Key:      server.Key,
+		}
+		s.Name = name
+		for _, ip := range server.IP {
 			s.IP = ip
 			servers = append(servers, s)
 		}

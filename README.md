@@ -36,15 +36,19 @@ Configuration
 
 ```yaml
 group:
-  -
-    -
-      name: g1
+  groups:
+    group1:
+      method: password
+      user: www
+      port: 21
+      password: yourpassword
+      ip: [192.168.3.10, 192.168.3.11, 192.168.3.12]
+    group2:
       method: password
       user: www
       port: 22
       password: yourpassword
-      ip: [192.168.3.10, 192.168.3.11, 192.168.3.12]
-      key:
+      ip: [192.168.3.13, 192.168.3.14, 192.168.3.15]
 single:
   -
     name: test1
@@ -69,6 +73,8 @@ single:
 Usage
 ------
 
+### 普通模式
+
 第一次使用需要指定配置文件：
 
 ```shell
@@ -80,3 +86,10 @@ sshh -c path-to-servers-config.yaml
 配置文件路径可以是相对 sshh 的路径或绝对路径
 
 pem 模式时，如果 pem 文件路径填写的是相对路径，程序会自动在配置文件目录和 sshh 执行目录查找，查找不到会panic。
+
+### 过滤group
+
+```shell
+sshh -g groupname [-c path-to-servers-config.yaml]
+```
+将只列出配置文件中指定名称的机器列表。
