@@ -92,4 +92,21 @@ pem 模式时，如果 pem 文件路径填写的是相对路径，程序会自�
 ```shell
 sshh -g groupname [-c path-to-servers-config.yaml]
 ```
-将只列出配置文件中指定名称的机器列表。
+
+将只列出配置文件中指定分组的机器列表。
+
+### 过滤IP
+
+```shell script
+sshh -f ip
+```
+
+将只列出IP匹配的机器。
+
+### 过滤IP并直连
+
+```shell script
+sshh -f ip -d
+```
+
+将立即连接IP匹配到的第一台机器。
