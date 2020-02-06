@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 type App struct {
@@ -29,8 +30,8 @@ func (app *App) Start() {
 	server.Connect()
 }
 
-func New(c, g string) *App {
-	servers, _ := readConf(c, g)
+func New(c, g, f string) *App {
+	servers, _ := readConf(c, g, f)
 
 	return &App{
 		ConfigPath: c,
@@ -98,7 +99,7 @@ type Group struct {
 	Key      string   `yaml:"key"`
 }
 
-func readConf(c, g string) ([]Server, error) {
+func readConf(c, g, f string) ([]Server, error) {
 	b, err := ioutil.ReadFile(c)
 	if err != nil {
 		panic(err)
@@ -116,6 +117,7 @@ func readConf(c, g string) ([]Server, error) {
 		if g != "" && name != g {
 			continue
 		}
+
 		s := Server{
 			Name:     name,
 			Method:   server.Method,
@@ -126,11 +128,19 @@ func readConf(c, g string) ([]Server, error) {
 		}
 		s.Name = name
 		for _, ip := range server.IP {
+			//IP check
+			if f != "" && !strings.Contains(ip, f) {
+				continue
+			}
 			s.IP = ip
 			servers = append(servers, s)
 		}
 	}
 	for _, server := range conf.Single {
+		//IP check
+		if f != "" && !strings.Contains(server.IP, f) {
+			continue
+		}
 		servers = append(servers, server)
 	}
 

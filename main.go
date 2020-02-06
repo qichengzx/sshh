@@ -13,7 +13,7 @@ import (
 
 const (
 	appName   = "sshh"
-	version   = "0.4.0"
+	version   = "0.4.1"
 	cacheFile = ".sshh_profile"
 )
 
@@ -21,12 +21,14 @@ var (
 	c string
 	h bool
 	g string
+	f string
 )
 
 func init() {
 	flag.BoolVar(&h, "h", false, "This help")
 	flag.StringVar(&c, "c", "", "Set configuration `filename` (default ./servers.yaml)")
 	flag.StringVar(&g, "g", "", "Use the specific group in config file")
+	flag.StringVar(&f, "f", "", "Match")
 	flag.Parse()
 	flag.Usage = usage
 }
@@ -52,7 +54,7 @@ func main() {
 }
 
 func appRun(c string) {
-	app := New(c, g)
+	app := New(c, g, f)
 	app.Start()
 }
 
