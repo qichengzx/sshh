@@ -16,14 +16,20 @@ type App struct {
 	servers    []Server
 }
 
-func (app *App) Start() {
+func (app *App) Start(direct bool) {
 	fmt.Println("Your servers")
 	fmt.Printf("[ID]\t%s\t%s\n", "server name", "IP")
 	for i, server := range app.servers {
 		fmt.Printf("[%d]\t%s\t%s\n", i, server.Name, server.IP)
 	}
 
-	server := app.readInput()
+	server := Server{}
+	if direct && len(app.servers) > 0 {
+		server = app.servers[0]
+	} else {
+		server = app.readInput()
+	}
+
 	fmt.Println("你选择了: " + server.IP)
 	fmt.Println("Connecting...")
 	server.Key = app.keyFile(server.Key)

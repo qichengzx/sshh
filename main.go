@@ -13,7 +13,7 @@ import (
 
 const (
 	appName   = "sshh"
-	version   = "0.4.1"
+	version   = "0.4.2"
 	cacheFile = ".sshh_profile"
 )
 
@@ -22,6 +22,7 @@ var (
 	h bool
 	g string
 	f string
+	d bool
 )
 
 func init() {
@@ -29,6 +30,7 @@ func init() {
 	flag.StringVar(&c, "c", "", "Use specified config file (default ./servers.yaml)")
 	flag.StringVar(&g, "g", "", "Only show specificd group(s) in config file")
 	flag.StringVar(&f, "f", "", "Only show servers that ip matched the given words")
+	flag.BoolVar(&d, "d", false, "Connect the first ip of [-f] matched")
 	flag.Parse()
 	flag.Usage = usage
 }
@@ -55,7 +57,7 @@ func main() {
 
 func appRun(c string) {
 	app := New(c, g, f)
-	app.Start()
+	app.Start(d && f != "")
 }
 
 func parseConfig(c string) string {
@@ -87,7 +89,7 @@ func profileRead() ([]byte, error) {
 
 func usage() {
 	fmt.Fprintf(os.Stdout, appName+" "+version+`
-Usage: `+appName+` [-c path/to/your/config-file.yaml] [-g group-name] [-f ip]
+Usage: `+appName+` [-c path/to/your/config-file.yaml] [-g group-name] [-f ip [-d]]
 
 Options:
 `)
