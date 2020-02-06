@@ -26,9 +26,9 @@ var (
 
 func init() {
 	flag.BoolVar(&h, "h", false, "This help")
-	flag.StringVar(&c, "c", "", "Set configuration `filename` (default ./servers.yaml)")
-	flag.StringVar(&g, "g", "", "Use the specific group in config file")
-	flag.StringVar(&f, "f", "", "Match")
+	flag.StringVar(&c, "c", "", "Use specified config file (default ./servers.yaml)")
+	flag.StringVar(&g, "g", "", "Only show specificd group(s) in config file")
+	flag.StringVar(&f, "f", "", "Only show servers that ip matched the given words")
 	flag.Parse()
 	flag.Usage = usage
 }
@@ -87,7 +87,7 @@ func profileRead() ([]byte, error) {
 
 func usage() {
 	fmt.Fprintf(os.Stdout, appName+" "+version+`
-Usage: `+appName+` [options]
+Usage: `+appName+` [-c path/to/your/config-file.yaml] [-g group-name] [-f ip]
 
 Options:
 `)
