@@ -132,7 +132,7 @@ func readConf(c, g, f string) ([]Server, error) {
 			Password: server.Password,
 			Key:      server.Key,
 		}
-		s.Name = name
+
 		for _, ip := range server.IP {
 			//IP check
 			if f != "" && !strings.Contains(ip, f) {
