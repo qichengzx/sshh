@@ -35,27 +35,28 @@ Configuration
 ------
 
 ```yaml
+common:
+  user: www
+  password: pwd
+  port: 22
+  method: password
+
 group:
   groups:
     group1:
-      method: password
-      user: www
-      port: 21
-      password: yourpassword
+      # 使用common中的设置信息
       ip: [192.168.3.10, 192.168.3.11, 192.168.3.12]
     group2:
+      # 使用自定义的设置信息
       method: password
-      user: www
-      port: 22
+      user: www2
       password: yourpassword
       ip: [192.168.3.13, 192.168.3.14, 192.168.3.15]
 single:
   -
+    # password使用自定义，其他信息使用common中的。
     name: test1
-    method: password
-    user: www
     ip: 192.168.3.20
-    port: 22
     password: yourpassword
   -
     name: test2
@@ -69,6 +70,9 @@ single:
 
 其中，group 表示可以使用一个账号登录的一组服务器，single 则为每服务器独立账号或密码的情况。
 (You know,Sometimes you wake up and you have a set of server permissions.)
+
+common中为公用的信息，比如实际列表中的机器都可以用通用的方式、信息登录，则在common中设置即可。
+同时，如果个别分组或机器信息不一致，可以单独设置。
 
 Usage
 ------

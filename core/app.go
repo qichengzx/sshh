@@ -37,7 +37,7 @@ func (app *App) Start(direct bool) {
 }
 
 func New(c, g, f string) *App {
-	servers, _ := readConf(c, g, f)
+	servers := readConf(c, g, f)
 
 	return &App{
 		ConfigPath: c,
@@ -87,6 +87,15 @@ func (app *App) keyFile(k string) string {
 }
 
 type Conf struct {
+	//Common is all the common info,
+	//So you can no longer fill in a detailed list.
+	Common struct {
+		User     string `yaml:user`
+		Password string `yaml:"password"`
+		Port     int    `yaml:"port"`
+		Method   string `yaml:"method"`
+	}
+
 	Groups Groups   `yaml:"group"`
 	Single []Server `yaml:"single"`
 }
@@ -105,7 +114,7 @@ type Group struct {
 	Key      string   `yaml:"key"`
 }
 
-func readConf(c, g, f string) ([]Server, error) {
+func readConf(c, g, f string) []Server {
 	b, err := ioutil.ReadFile(c)
 	if err != nil {
 		panic(err)
@@ -117,7 +126,7 @@ func readConf(c, g, f string) ([]Server, error) {
 		log.Fatalf("error: %v", err)
 	}
 
-	servers := []Server{}
+	var servers []Server
 	for name, server := range conf.Groups.Groups {
 		//group check
 		if g != "" && name != g {
@@ -150,5 +159,20 @@ func readConf(c, g, f string) ([]Server, error) {
 		servers = append(servers, server)
 	}
 
-	return servers, nil
+	for i := 0; i < len(servers); i++ {
+		if servers[i].User == "" && conf.Common.User != "" {
+			servers[i].User = conf.Common.User
+		}
+		if servers[i].Port == 0 && conf.Common.Port != 0 {
+			servers[i].Port = conf.Common.Port
+		}
+		if servers[i].Password == "" && conf.Common.Password != "" {
+			servers[i].Password = conf.Common.Password
+		}
+		if servers[i].Method == "" && conf.Common.Method != "" {
+			servers[i].Method = conf.Common.Method
+		}
+	}
+
+	return servers
 }

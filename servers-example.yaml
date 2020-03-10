@@ -1,24 +1,21 @@
+common:
+  user: www
+  password: pwd
+  port: 22
+  method: password
+
 group:
   groups:
     group1:
-      method: password
-      user: www
-      port: 21
-      password: yourpassword
       ip: [192.168.3.10, 192.168.3.11, 192.168.3.12]
     group2:
-      method: password
-      user: www
-      port: 22
+      user: www2
       password: yourpassword
       ip: [192.168.3.13, 192.168.3.14, 192.168.3.15]
 single:
   -
     name: test1
-    method: password
-    user: www
     ip: 192.168.3.20
-    port: 22
     password: yourpassword
   -
     name: test2
