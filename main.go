@@ -20,6 +20,7 @@ const (
 var (
 	c string
 	h bool
+	v bool
 	g string
 	f string
 	d bool
@@ -27,6 +28,7 @@ var (
 
 func init() {
 	flag.BoolVar(&h, "h", false, "This help")
+	flag.BoolVar(&v, "v", false, "Show application version.")
 	flag.StringVar(&c, "c", "", "Use specified config file (default ./servers.yaml)")
 	flag.StringVar(&g, "g", "", "Only show specificd group(s) in config file")
 	flag.StringVar(&f, "f", "", "Only show servers that ip matched the given words")
@@ -44,6 +46,9 @@ func main() {
 		break
 	case h:
 		flag.Usage()
+		break
+	case v:
+		fmt.Println("version "+version)
 		break
 	default:
 		f, err := profileRead()
